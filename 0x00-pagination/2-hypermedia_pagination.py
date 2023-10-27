@@ -46,7 +46,7 @@ class Server:
         """
         assert isinstance(page, int) and page > 0
         assert isinstance(page_size, int) and page_size > 0
-        
+
         result = index_range(page, page_size)
         data = self.dataset()
         if result:
@@ -60,22 +60,25 @@ class Server:
         """
         hyper_dict = {}
         hyper_dict["page_size"] = page_size
+        if self.get_page(page, page_size) != []:
+            hyper_dict["page_size"] = page_size
+        else:
+            hyper_dict["page_size"] = 0
+
         hyper_dict["page"] = page
         hyper_dict["data"] = self.get_page(page, page_size)
 
-        try:
-            self.get_page(page + 1, page_size)
+        if hyper_dict["data"] != []:
             hyper_dict["next_page"] = page + 1
-        except:
+        else:
             hyper_dict["next_page"] = None
 
         try:
             self.get_page(page - 1, page_size)
             hyper_dict["prev_page"] = page - 1
-        except:
+        except AssertionError:
             hyper_dict["prev_page"] = None
 
         hyper_dict["total_pages"] = math.ceil(len(self.dataset()) / page_size)
 
         return hyper_dict
-

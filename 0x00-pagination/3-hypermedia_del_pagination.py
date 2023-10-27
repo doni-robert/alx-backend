@@ -44,26 +44,21 @@ class Server:
         """Hypermedia resilient on deletion
         """
         resilient_dict = {}
-        dataset = self.indexed_dataset()
         data = []
-        for i in itertools.count(index):
-            if len(data) == page_size:
-                break
-            try:
-                data.append(recurse_find(dataset, i))
-            except:
-                break
-        print(i)
+        
+        i = index
+        count = 0
+
+        while count < page_size:
+            if self.__indexed_dataset[i]:
+                data.append(self.__indexed_dataset[i])
+                count += 1
+            i += 1
+
 
         resilient_dict['index'] = index
         resilient_dict['data'] = data
-        resilient_dict['page_size'] = len(data)
-        resilient_dict['next_index'] = i
+        resilient_dict['page_size'] = page_size
+        resilient_dict['next_index'] = index + page_size
 
         return resilient_dict
-    
-    def recurse_find(dataset, indx):
-        if dataset[indx]:
-            return dataset[indx]
-        else:
-            recurse_find(dataset, indx + 1)
