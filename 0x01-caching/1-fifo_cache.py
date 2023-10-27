@@ -18,8 +18,8 @@ class FIFOCache(BaseCaching):
         Add an item in the cache
         """
         if key and item:
-            if (len(self.cache_data) >= BaseCaching.MAX_ITEMS
-                and key not in self.cache_data):
+            if (len(self.cache_data) >= BaseCaching.MAX_ITEMS and
+                    key not in self.cache_data):
                 k, v = self.cache_data.popitem(last=False)
                 print(f'DISCARD: {k}')
             self.cache_data[key] = item
