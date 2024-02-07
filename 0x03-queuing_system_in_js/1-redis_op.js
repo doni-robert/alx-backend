@@ -1,9 +1,8 @@
 /**
  * Makes a connection to the Redis Server and displays messaages on
- * error and connect events
+ * error and connect events.
  */
-import { createClient } from 'redis';
-import { print } from 'redis';
+import { createClient, print } from 'redis';
 
 const client = createClient();
 client.on('error', (err) => console.log('Redis client not connected to the server:', err));
